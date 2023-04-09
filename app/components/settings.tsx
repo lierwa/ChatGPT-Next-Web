@@ -11,6 +11,8 @@ import EditIcon from "../icons/edit.svg";
 import EyeIcon from "../icons/eye.svg";
 import EyeOffIcon from "../icons/eye-off.svg";
 
+import Select from "./select";
+
 import { List, ListItem, Popover, showToast } from "./ui-lib";
 
 import { IconButton } from "./button";
@@ -225,7 +227,17 @@ export function Settings(props: { closeSettings: () => void }) {
           </SettingItem>
 
           <SettingItem title={Locale.Settings.SendKey}>
-            <select
+            <Select
+              lists={Object.values(SubmitKey)}
+              value={config.submitKey}
+              onChange={(e) => {
+                updateConfig(
+                  (config) =>
+                    (config.submitKey = e.target.value as any as SubmitKey),
+                );
+              }}
+            />
+            {/* <select
               value={config.submitKey}
               onChange={(e) => {
                 updateConfig(
@@ -239,14 +251,23 @@ export function Settings(props: { closeSettings: () => void }) {
                   {v}
                 </option>
               ))}
-            </select>
+            </select> */}
           </SettingItem>
 
           <ListItem>
             <div className={styles["settings-title"]}>
               {Locale.Settings.Theme}
             </div>
-            <select
+            <Select
+              lists={Object.values(Theme)}
+              value={config.theme}
+              onChange={(e) => {
+                updateConfig(
+                  (config) => (config.theme = e.target.value as any as Theme),
+                );
+              }}
+            />
+            {/* <select
               value={config.theme}
               onChange={(e) => {
                 updateConfig(
@@ -259,22 +280,22 @@ export function Settings(props: { closeSettings: () => void }) {
                   {v}
                 </option>
               ))}
-            </select>
+            </select> */}
           </ListItem>
 
           <SettingItem title={Locale.Settings.Lang.Name}>
-            <select
+            <Select
+              lists={AllLangs.map((lang) => {
+                return {
+                  label: Locale.Settings.Lang.Options[lang],
+                  value: lang,
+                };
+              })}
               value={getLang()}
               onChange={(e) => {
                 changeLang(e.target.value as any);
               }}
-            >
-              {AllLangs.map((lang) => (
-                <option value={lang} key={lang}>
-                  {Locale.Settings.Lang.Options[lang]}
-                </option>
-              ))}
-            </select>
+            />
           </SettingItem>
 
           <SettingItem
@@ -449,7 +470,21 @@ export function Settings(props: { closeSettings: () => void }) {
 
         <List>
           <SettingItem title={Locale.Settings.Model}>
-            <select
+            <Select
+              lists={ALL_MODELS.map((v) => {
+                return { label: v.name, value: v.name, disabled: !v.available };
+              })}
+              value={config.modelConfig.model}
+              onChange={(e) => {
+                updateConfig(
+                  (config) =>
+                    (config.modelConfig.model = ModalConfigValidator.model(
+                      e.currentTarget.value,
+                    )),
+                );
+              }}
+            />
+            {/* <select
               value={config.modelConfig.model}
               onChange={(e) => {
                 updateConfig(
@@ -465,7 +500,7 @@ export function Settings(props: { closeSettings: () => void }) {
                   {v.name}
                 </option>
               ))}
-            </select>
+            </select> */}
           </SettingItem>
           <SettingItem
             title={Locale.Settings.Temperature.Title}

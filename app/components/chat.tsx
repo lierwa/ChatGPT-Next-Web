@@ -1,5 +1,6 @@
 import { useDebouncedCallback } from "use-debounce";
 import { memo, useState, useRef, useEffect, useLayoutEffect } from "react";
+import Select from "./select";
 
 import SendWhiteIcon from "../icons/send-white.svg";
 import BrainIcon from "../icons/brain.svg";
@@ -34,9 +35,12 @@ import chatStyle from "./chat.module.scss";
 
 import { Modal, showModal, showToast } from "./ui-lib";
 
-const Markdown = dynamic(async () => memo((await import("./markdown")).Markdown), {
-  loading: () => <LoadingIcon />,
-});
+const Markdown = dynamic(
+  async () => memo((await import("./markdown")).Markdown),
+  {
+    loading: () => <LoadingIcon />,
+  },
+);
 
 const Emoji = dynamic(async () => (await import("emoji-picker-react")).Emoji, {
   loading: () => <LoadingIcon />,
@@ -155,22 +159,17 @@ function PromptToast(props: {
               <div className={chatStyle["context-prompt"]}>
                 {context.map((c, i) => (
                   <div className={chatStyle["context-prompt-row"]} key={i}>
-                    <select
+                    <Select
                       value={c.role}
-                      className={chatStyle["context-role"]}
+                      className={"mr-[10px]"}
+                      lists={ROLES}
                       onChange={(e) =>
                         updateContextPrompt(i, {
                           ...c,
                           role: e.target.value as any,
                         })
                       }
-                    >
-                      {ROLES.map((r) => (
-                        <option key={r} value={r}>
-                          {r}
-                        </option>
-                      ))}
-                    </select>
+                    />
                     <input
                       value={c.content}
                       type="text"
@@ -348,6 +347,7 @@ export function Chat(props: {
   const SEARCH_TEXT_LIMIT = 30;
   const onInput = (text: string) => {
     scrollInput();
+    console.log("userInput::::", userInput);
     setUserInput(text);
     const n = text.trim().length;
 
@@ -636,6 +636,7 @@ export function Chat(props: {
             icon={<SendWhiteIcon />}
             text={Locale.Chat.Send}
             className={styles["chat-input-send"]}
+            type="primary"
             noDark
             onClick={onUserSubmit}
           />

@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .border-line {
+    @apply border border-solid border-b-color dark:border-d-b-color;
+  }
+
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
+
+  .clickable {
+    @apply hover:brightness-90;
+
+    div:not(.no-dark) > svg {
+        @apply invert-[0.5]
+    }
+  }
+}

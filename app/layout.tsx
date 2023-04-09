@@ -2,6 +2,9 @@
 import "./styles/globals.scss";
 import "./styles/markdown.scss";
 import "./styles/highlight.scss";
+
+import "./styles/index.scss";
+
 import process from "child_process";
 import { ACCESS_CODES, IS_STANDALONE } from "./api/access";
 
