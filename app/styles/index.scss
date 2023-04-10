@@ -15,7 +15,11 @@
     @apply hover:brightness-90;
 
     div:not(.no-dark) > svg {
-        @apply invert-[0.5]
+      @apply invert-[0.5];
     }
+  }
+
+  .input-full {
+    @apply input input-bordered input-primary w-auto max-w-xs input-xs;
   }
 }

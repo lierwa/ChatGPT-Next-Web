@@ -12,7 +12,7 @@ import EyeIcon from "../icons/eye.svg";
 import EyeOffIcon from "../icons/eye-off.svg";
 
 import Select from "./select";
-
+import Range from "./Range";
 import { List, ListItem, Popover, showToast } from "./ui-lib";
 
 import { IconButton } from "./button";
@@ -34,6 +34,7 @@ import { UPDATE_URL } from "../constant";
 import { SearchService, usePromptStore } from "../store/prompt";
 import { requestUsage } from "../requests";
 import { ErrorBoundary } from "./error";
+import { themeChange } from "theme-change";
 
 function SettingItem(props: {
   title: string;
@@ -61,18 +62,26 @@ function PasswordInput(props: HTMLProps<HTMLInputElement>) {
   }
 
   return (
-    <div className={styles["password-input"]}>
+    <div className={"flex-center"}>
       <IconButton
         icon={visible ? <EyeIcon /> : <EyeOffIcon />}
         onClick={changeVisibility}
         className={styles["password-eye"]}
       />
-      <input {...props} type={visible ? "text" : "password"} />
+      <input
+        {...props}
+        className="input-full"
+        type={visible ? "text" : "password"}
+      />
     </div>
   );
 }
 
 export function Settings(props: { closeSettings: () => void }) {
+  useEffect(() => {
+    themeChange(false);
+  }, []);
+
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [config, updateConfig, resetConfig, clearAllData, clearSessions] =
     useChatStore((state) => [
@@ -259,6 +268,7 @@ export function Settings(props: { closeSettings: () => void }) {
               {Locale.Settings.Theme}
             </div>
             <Select
+              data-choose-theme
               lists={Object.values(Theme)}
               value={config.theme}
               onChange={(e) => {
@@ -302,8 +312,7 @@ export function Settings(props: { closeSettings: () => void }) {
             title={Locale.Settings.FontSize.Title}
             subTitle={Locale.Settings.FontSize.SubTitle}
           >
-            <input
-              type="range"
+            <Range
               title={`${config.fontSize ?? 14}px`}
               value={config.fontSize}
               min="12"
@@ -315,10 +324,19 @@ export function Settings(props: { closeSettings: () => void }) {
                     (config.fontSize = Number.parseInt(e.currentTarget.value)),
                 )
               }
-            ></input>
+            />
           </SettingItem>
 
           <SettingItem title={Locale.Settings.TightBorder}>
+            {/* <input
+              type="checkbox"
+              checked={config.tightBorder}
+              onChange={(e) =>
+                updateConfig(
+                  (config) => (config.tightBorder = e.currentTarget.checked),
+                )
+              }
+            ></input> */}
             <input
               type="checkbox"
               checked={config.tightBorder}
@@ -327,7 +345,8 @@ export function Settings(props: { closeSettings: () => void }) {
                   (config) => (config.tightBorder = e.currentTarget.checked),
                 )
               }
-            ></input>
+              className="checkbox checkbox-primary"
+            />
           </SettingItem>
 
           <SettingItem title={Locale.Settings.SendPreviewBubble}>
@@ -340,7 +359,8 @@ export function Settings(props: { closeSettings: () => void }) {
                     (config.sendPreviewBubble = e.currentTarget.checked),
                 )
               }
-            ></input>
+              className="checkbox checkbox-primary"
+            />
           </SettingItem>
         </List>
         <List>
@@ -432,8 +452,7 @@ export function Settings(props: { closeSettings: () => void }) {
             title={Locale.Settings.HistoryCount.Title}
             subTitle={Locale.Settings.HistoryCount.SubTitle}
           >
-            <input
-              type="range"
+            <Range
               title={config.historyMessageCount.toString()}
               value={config.historyMessageCount}
               min="0"
@@ -445,7 +464,7 @@ export function Settings(props: { closeSettings: () => void }) {
                     (config.historyMessageCount = e.target.valueAsNumber),
                 )
               }
-            ></input>
+            />
           </SettingItem>
 
           <SettingItem
@@ -454,6 +473,7 @@ export function Settings(props: { closeSettings: () => void }) {
           >
             <input
               type="number"
+              className="input-full"
               min={500}
               max={4000}
               value={config.compressMessageLengthThreshold}
@@ -484,30 +504,12 @@ export function Settings(props: { closeSettings: () => void }) {
                 );
               }}
             />
-            {/* <select
-              value={config.modelConfig.model}
-              onChange={(e) => {
-                updateConfig(
-                  (config) =>
-                    (config.modelConfig.model = ModalConfigValidator.model(
-                      e.currentTarget.value,
-                    )),
-                );
-              }}
-            >
-              {ALL_MODELS.map((v) => (
-                <option value={v.name} key={v.name} disabled={!v.available}>
-                  {v.name}
-                </option>
-              ))}
-            </select> */}
           </SettingItem>
           <SettingItem
             title={Locale.Settings.Temperature.Title}
             subTitle={Locale.Settings.Temperature.SubTitle}
           >
-            <input
-              type="range"
+            <Range
               value={config.modelConfig.temperature?.toFixed(1)}
               min="0"
               max="2"
@@ -521,7 +523,7 @@ export function Settings(props: { closeSettings: () => void }) {
                       )),
                 );
               }}
-            ></input>
+            />
           </SettingItem>
           <SettingItem
             title={Locale.Settings.MaxTokens.Title}
@@ -529,6 +531,7 @@ export function Settings(props: { closeSettings: () => void }) {
           >
             <input
               type="number"
+              className="input-full"
               min={100}
               max={32000}
               value={config.modelConfig.max_tokens}
@@ -547,12 +550,12 @@ export function Settings(props: { closeSettings: () => void }) {
             title={Locale.Settings.PresencePenlty.Title}
             subTitle={Locale.Settings.PresencePenlty.SubTitle}
           >
-            <input
-              type="range"
+            <Range
               value={config.modelConfig.presence_penalty?.toFixed(1)}
               min="-2"
               max="2"
               step="0.5"
+              className="w-[100px]"
               onChange={(e) => {
                 updateConfig(
                   (config) =>
@@ -562,7 +565,7 @@ export function Settings(props: { closeSettings: () => void }) {
                       )),
                 );
               }}
-            ></input>
+            />
           </SettingItem>
         </List>
       </div>

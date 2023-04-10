@@ -29,6 +29,8 @@ export enum Theme {
   Auto = "auto",
   Dark = "dark",
   Light = "light",
+  Cupcake = "cupcake",
+  Bumblebee = "bumblebee",
 }
 
 export interface ChatConfig {

@@ -15,14 +15,15 @@ interface ISelect {
 }
 
 export default function Select(props: ISelect) {
-  const { value, className, lists = [], onChange } = props;
+  const { value, className, lists = [], onChange, ...rest } = props;
   return (
     <select
       value={value}
       className={classNames(
-        "text-xs text-center p-[10px] border-line rounded-lg appearance-none cursor-pointer bg-white dark:bg-d-white text-black dark:text-d-black focus-visible:outline-none",
+        "select select-primary max-w-xs select-sm w-auto",
         className,
       )}
+      {...rest}
       onChange={(e) => onChange?.(e)}
     >
       {lists.map((r: string | Option) => {

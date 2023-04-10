@@ -41,20 +41,14 @@ const Settings = dynamic(async () => (await import("./settings")).Settings, {
 
 function useSwitchTheme() {
   const config = useChatStore((state) => state.config);
-
   useEffect(() => {
     document.body.classList.remove("light");
     document.body.classList.remove("dark");
 
-    document.documentElement.classList.remove("light");
-    document.documentElement.classList.remove("dark");
-
     if (config.theme === "dark") {
       document.body.classList.add("dark");
-      document.documentElement.classList.add("dark");
     } else if (config.theme === "light") {
       document.body.classList.add("light");
-      document.documentElement.classList.add("light");
     }
 
     const metaDescriptionDark = document.querySelector(

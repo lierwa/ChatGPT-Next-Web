@@ -32,6 +32,16 @@ module.exports = {
       'card-shadow': '0px 2px 4px 0px rgb(0, 0, 0, 0.05)',
     }
   },
-  plugins: [],
+  plugins: [require("daisyui")],
+  daisyui: {
+    styled: true,
+    themes: ["light", "dark", "cupcake", "bumblebee"],
+    base: true,
+    utils: true,
+    logs: true,
+    rtl: false,
+    prefix: "",
+    darkTheme: "dark",
+  },
 }
 
