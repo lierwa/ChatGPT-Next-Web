@@ -35,6 +35,7 @@ import { SearchService, usePromptStore } from "../store/prompt";
 import { requestUsage } from "../requests";
 import { ErrorBoundary } from "./error";
 import { themeChange } from "theme-change";
+import classNames from "classnames";
 
 function SettingItem(props: {
   title: string;
@@ -65,8 +66,9 @@ function PasswordInput(props: HTMLProps<HTMLInputElement>) {
     <div className={"flex-center"}>
       <IconButton
         icon={visible ? <EyeIcon /> : <EyeOffIcon />}
+        type="ghost"
         onClick={changeVisibility}
-        className={styles["password-eye"]}
+        className={classNames(styles["password-eye"], "btn-circle btn-xs")}
       />
       <input
         {...props}
@@ -161,7 +163,7 @@ export function Settings(props: { closeSettings: () => void }) {
             <IconButton
               icon={<ClearIcon />}
               onClick={clearSessions}
-              bordered
+              type="ghost"
               title={Locale.Settings.Actions.ClearAll}
             />
           </div>
@@ -169,7 +171,7 @@ export function Settings(props: { closeSettings: () => void }) {
             <IconButton
               icon={<ResetIcon />}
               onClick={resetConfig}
-              bordered
+              type="ghost"
               title={Locale.Settings.Actions.ResetAll}
             />
           </div>
@@ -177,7 +179,7 @@ export function Settings(props: { closeSettings: () => void }) {
             <IconButton
               icon={<CloseIcon />}
               onClick={props.closeSettings}
-              bordered
+              type="ghost"
               title={Locale.Settings.Actions.Close}
             />
           </div>
@@ -377,7 +379,8 @@ export function Settings(props: { closeSettings: () => void }) {
                     (config.disablePromptHint = e.currentTarget.checked),
                 )
               }
-            ></input>
+              className="checkbox checkbox-primary"
+            />
           </SettingItem>
 
           <SettingItem
@@ -389,6 +392,7 @@ export function Settings(props: { closeSettings: () => void }) {
           >
             <IconButton
               icon={<EditIcon />}
+              type="ghost"
               text={Locale.Settings.Prompt.Edit}
               onClick={() => showToast(Locale.WIP)}
             />
@@ -441,6 +445,7 @@ export function Settings(props: { closeSettings: () => void }) {
               <div />
             ) : (
               <IconButton
+                type="ghost"
                 icon={<ResetIcon></ResetIcon>}
                 text={Locale.Settings.Usage.Check}
                 onClick={checkUsage}

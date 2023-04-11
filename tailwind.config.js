@@ -5,7 +5,10 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
-      borderColor: 'rgb(222, 222, 222)',
+      borderColor: {
+        light: 'rgb(222, 222, 222)',
+        dark: 'rgba(255, 255, 255, 0.192)'
+      },
     },
     colors: {
       white: 'rgb(255, 255, 255)',
@@ -22,10 +25,9 @@ module.exports = {
       'd-hover-color': '#323232',
       'bar-color': 'rgba(0, 0, 0, 0.1)',
       'd-bar-color': 'rgba(255, 255, 255, 0.1)',
-      
+
       'theme-color': 'rgb(250, 250, 250)',
-      "b-color": 'rgb(222, 222, 222)',
-      "d-b-color": 'rgba(255, 255, 255, 0.192)',
+
     },
     boxShadow: {
       default: '50px 50px 100px 10px rgb(0, 0, 0, 0.1)',
@@ -34,14 +36,43 @@ module.exports = {
   },
   plugins: [require("daisyui")],
   daisyui: {
-    styled: true,
-    themes: ["light", "dark", "cupcake", "bumblebee"],
-    base: true,
-    utils: true,
-    logs: true,
-    rtl: false,
-    prefix: "",
     darkTheme: "dark",
+    themes: [
+      {
+        light: {
+          ...require('daisyui/src/colors/themes')['[data-theme=light]'],
+          '.chat-image': {
+            'align-self': 'flex-start'
+          },
+          '.chat-start': {
+            'align-items': 'start'
+          },
+          '.chat-end': {
+            'align-items': 'end'
+          },
+          '.chat-bubble .markdown-body': {
+            'color': '#ccc',
+          },
+          '.chat-start .chat-bubble::before': {
+            'transform': 'rotate(-90deg)',
+            'top': 0
+          },
+          '.chat-end .chat-bubble::before': {
+            'transform': 'rotate(90deg)',
+            'top': 0
+          },
+          '.chat-start .chat-bubble': {
+            'border-top-left-radius': '0',
+            'border-bottom-left-radius': 'var(--rounded-box, 1rem)',
+          },
+          '.chat-end .chat-bubble': {
+            'border-top-right-radius': '0',
+            'border-bottom-right-radius': 'var(--rounded-box, 1rem)',
+          }
+        },
+      },
+      "dark", "cupcake", "bumblebee"
+    ],
   },
 }
 

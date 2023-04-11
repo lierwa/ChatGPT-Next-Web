@@ -22,4 +22,8 @@
   .input-full {
     @apply input input-bordered input-primary w-auto max-w-xs input-xs;
   }
+
+  .link {
+    @apply text-xs text-neutral hover:text-neutral-focus dark:text-primary dark:hover:text-primary-focus no-underline hover:underline;
+  }
 }

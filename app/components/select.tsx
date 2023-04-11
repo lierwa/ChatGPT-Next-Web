@@ -20,7 +20,7 @@ export default function Select(props: ISelect) {
     <select
       value={value}
       className={classNames(
-        "select select-primary max-w-xs select-sm w-auto",
+        "select max-w-xs select-primary select-sm w-auto",
         className,
       )}
       {...rest}

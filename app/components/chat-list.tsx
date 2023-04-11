@@ -1,46 +1,11 @@
 import { useState, useRef, useEffect, useLayoutEffect } from "react";
-import DeleteIcon from "../icons/delete.svg";
 import styles from "./home.module.scss";
 
-import {
-  Message,
-  SubmitKey,
-  useChatStore,
-  ChatSession,
-  BOT_HELLO,
-} from "../store";
+import { useChatStore } from "../store";
 
 import Locale from "../locales";
 import { isMobileScreen } from "../utils";
-
-export function ChatItem(props: {
-  onClick?: () => void;
-  onDelete?: () => void;
-  title: string;
-  count: number;
-  time: string;
-  selected: boolean;
-}) {
-  return (
-    <div
-      className={`${styles["chat-item"]} ${
-        props.selected && styles["chat-item-selected"]
-      }`}
-      onClick={props.onClick}
-    >
-      <div className={styles["chat-item-title"]}>{props.title}</div>
-      <div className={styles["chat-item-info"]}>
-        <div className={styles["chat-item-count"]}>
-          {Locale.ChatItem.ChatItemCount(props.count)}
-        </div>
-        <div className={styles["chat-item-date"]}>{props.time}</div>
-      </div>
-      <div className={styles["chat-item-delete"]} onClick={props.onDelete}>
-        <DeleteIcon />
-      </div>
-    </div>
-  );
-}
+import ChatItem from "./chat-info";
 
 export function ChatList() {
   const [sessions, selectedIndex, selectSession, removeSession] = useChatStore(

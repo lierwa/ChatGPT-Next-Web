@@ -34,6 +34,7 @@ import styles from "./home.module.scss";
 import chatStyle from "./chat.module.scss";
 
 import { Modal, showModal, showToast } from "./ui-lib";
+import classNames from "classnames";
 
 const Markdown = dynamic(
   async () => memo((await import("./markdown")).Markdown),
@@ -50,12 +51,12 @@ export function Avatar(props: { role: Message["role"] }) {
   const config = useChatStore((state) => state.config);
 
   if (props.role !== "user") {
-    return <BotIcon className={styles["user-avtar"]} />;
+    return <BotIcon className={"w-full h-full"} />;
   }
 
   return (
-    <div className={styles["user-avtar"]}>
-      <Emoji unified={config.avatar} size={18} getEmojiUrl={getEmojiUrl} />
+    <div className={"w-full h-full"}>
+      <Emoji unified={config.avatar} getEmojiUrl={getEmojiUrl} />
     </div>
   );
 }
@@ -83,14 +84,14 @@ function exportMessages(messages: Message[], topic: string) {
       <IconButton
         key="copy"
         icon={<CopyIcon />}
-        bordered
+        type="ghost"
         text={Locale.Export.Copy}
         onClick={() => copyToClipboard(mdText)}
       />,
       <IconButton
         key="download"
         icon={<DownloadIcon />}
-        bordered
+        type="ghost"
         text={Locale.Export.Download}
         onClick={() => downloadAs(mdText, filename)}
       />,
@@ -148,7 +149,7 @@ function PromptToast(props: {
               <IconButton
                 key="copy"
                 icon={<CopyIcon />}
-                bordered
+                type="ghost"
                 text={Locale.Memory.Copy}
                 onClick={() => copyToClipboard(session.memoryPrompt)}
               />,
@@ -185,7 +186,7 @@ function PromptToast(props: {
                       icon={<DeleteIcon />}
                       className={chatStyle["context-delete-button"]}
                       onClick={() => removeContextPrompt(i)}
-                      bordered
+                      type="ghost"
                     />
                   </div>
                 ))}
@@ -194,7 +195,7 @@ function PromptToast(props: {
                   <IconButton
                     icon={<AddIcon />}
                     text={Locale.Context.Add}
-                    bordered
+                    type="ghost"
                     className={chatStyle["context-prompt-button"]}
                     onClick={() =>
                       addContextPrompt({
@@ -490,7 +491,7 @@ export function Chat(props: {
           <div className={styles["window-action-button"] + " " + styles.mobile}>
             <IconButton
               icon={<MenuIcon />}
-              bordered
+              type="ghost"
               title={Locale.Chat.Actions.ChatList}
               onClick={props?.showSideBar}
             />
@@ -498,7 +499,7 @@ export function Chat(props: {
           <div className={styles["window-action-button"]}>
             <IconButton
               icon={<BrainIcon />}
-              bordered
+              type="ghost"
               title={Locale.Chat.Actions.CompressedHistory}
               onClick={() => {
                 setShowPromptModal(true);
@@ -508,7 +509,7 @@ export function Chat(props: {
           <div className={styles["window-action-button"]}>
             <IconButton
               icon={<ExportIcon />}
-              bordered
+              type="ghost"
               title={Locale.Chat.Actions.Export}
               onClick={() => {
                 exportMessages(
@@ -543,12 +544,21 @@ export function Chat(props: {
           return (
             <div
               key={i}
-              className={
-                isUser ? styles["chat-message-user"] : styles["chat-message"]
-              }
+              // className={
+              //   // isUser ? styles["chat-message-user"] : styles["chat-message"]
+              // }
             >
-              <div className={styles["chat-message-container"]}>
-                <div className={styles["chat-message-avatar"]}>
+              <div
+                className={classNames(
+                  "w-full chat py-2",
+                  isUser ? "chat-end" : "chat-start",
+                )}
+              >
+                <div
+                  className={
+                    "chat-image avatar w-10 h-10 rounded-full flex-center"
+                  }
+                >
                   <Avatar role={message.role} />
                 </div>
                 {(message.preview || message.streaming) && (
@@ -556,7 +566,9 @@ export function Chat(props: {
                     {Locale.Chat.Typing}
                   </div>
                 )}
-                <div className={styles["chat-message-item"]}>
+                <div
+                  className={classNames(isUser ? "chat-bubble" : "chat-bubble")}
+                >
                   {!isUser &&
                     !(message.preview || message.content.length === 0) && (
                       <div className={styles["chat-message-top-actions"]}>
@@ -602,10 +614,12 @@ export function Chat(props: {
                   )}
                 </div>
                 {!isUser && !message.preview && (
-                  <div className={styles["chat-message-actions"]}>
-                    <div className={styles["chat-message-action-date"]}>
-                      {message.date.toLocaleString()}
-                    </div>
+                  <div
+                    className={
+                      "text-xs box-border mt-[5px] chat-footer opacity-50"
+                    }
+                  >
+                    {message.date.toLocaleString()}
                   </div>
                 )}
               </div>
@@ -635,7 +649,7 @@ export function Chat(props: {
           <IconButton
             icon={<SendWhiteIcon />}
             text={Locale.Chat.Send}
-            className={styles["chat-input-send"]}
+            className={"absolute right-[30px] bottom-[30px]"}
             type="primary"
             noDark
             onClick={onUserSubmit}

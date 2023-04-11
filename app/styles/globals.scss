@@ -130,19 +130,19 @@ input {
   text-align: center;
 }
 
-input[type="checkbox"] {
-  cursor: pointer;
-  background-color: var(--white);
-  color: var(--black);
-  appearance: none;
-  border: var(--border-in-light);
-  border-radius: 5px;
-  height: 16px;
-  width: 16px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
+// input[type="checkbox"] {
+//   cursor: pointer;
+//   background-color: var(--white);
+//   color: var(--black);
+//   appearance: none;
+//   border: var(--border-in-light);
+//   border-radius: 5px;
+//   height: 16px;
+//   width: 16px;
+//   display: inline-flex;
+//   align-items: center;
+//   justify-content: center;
+// }
 
 // input[type="checkbox"]:checked::after {
 //   display: inline-block;
@@ -213,15 +213,15 @@ div.math {
   justify-content: center;
 }
 
-.link {
-  font-size: 12px;
-  color: var(--primary);
-  text-decoration: none;
+// .link {
+//   font-size: 12px;
+//   color: var(--primary);
+//   text-decoration: none;
 
-  &:hover {
-    text-decoration: underline;
-  }
-}
+//   &:hover {
+//     text-decoration: underline;
+//   }
+// }
 
 pre {
   position: relative;
