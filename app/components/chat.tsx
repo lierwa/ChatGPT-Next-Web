@@ -52,11 +52,11 @@ export function Avatar(props: { role: Message["role"] }) {
   const config = useChatStore((state) => state.config);
 
   if (props.role !== "user") {
-    return <BotIcon className={"w-full h-full"} />;
+    return <BotIcon className={"w-6 sm:w-8 h-full"} />;
   }
 
   return (
-    <div className={"w-full h-full"}>
+    <div className={"w-6 sm:w-8 h-full"}>
       <Emoji unified={config.avatar} getEmojiUrl={getEmojiUrl} />
     </div>
   );
@@ -348,7 +348,6 @@ export function Chat(props: {
   const SEARCH_TEXT_LIMIT = 30;
   const onInput = (text: string) => {
     scrollInput();
-    console.log("userInput::::", userInput);
     setUserInput(text);
     const n = text.trim().length;
 
@@ -463,29 +462,6 @@ export function Chat(props: {
     inputRef.current?.focus();
   }, []);
 
-  const str =
-    "我能为你提供什么帮助么？, 我能为你提供什么帮助么?, 我能为你提供什么帮助么？, 我能为你提供什么帮助么？";
-  const [testText, setTestText] = useState<string>("222");
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (str) {
-      let idx = 0;
-      setLoading(true);
-      const timer = setInterval(() => {
-        if (idx >= str.length) {
-          setLoading(false);
-          clearInterval(timer);
-          return;
-        }
-        setTestText(str.slice(0, idx));
-        idx++;
-      }, 300);
-    }
-  }, [str]);
-
-  console.log("testText", testText);
-
   return (
     <div className={styles.chat} key={session.id}>
       <div className={styles["window-header"]}>
@@ -554,7 +530,7 @@ export function Chat(props: {
       </div>
 
       <div
-        className={styles["chat-body"]}
+        className={"flex-1 overflow-auto px-5 py-8 relative"}
         ref={scrollRef}
         onScroll={(e) => onChatBodyScroll(e.currentTarget)}
         onWheel={(e) => setAutoScroll(hitBottom && e.deltaY > 0)}
@@ -567,13 +543,67 @@ export function Chat(props: {
           const isUser = message.role === "user";
 
           return (
-            <div
+            <Bubble
               key={i}
-              // className={
-              //   // isUser ? styles["chat-message-user"] : styles["chat-message"]
-              // }
-            >
-              <div
+              avatar={<Avatar role={message.role} />}
+              type={isUser ? "primary" : "neutral"}
+              header={
+                <>
+                  {!isUser && !message.preview && (
+                    <span>{message.date.toLocaleString()}</span>
+                  )}
+                  {(message.preview || message.streaming) && (
+                    <span className="ml-3">{Locale.Chat.Typing}</span>
+                  )}
+                </>
+              }
+              content={
+                (message.preview || message.content.length === 0) && !isUser ? (
+                  <LoadingIcon />
+                ) : (
+                  <div
+                    className="markdown-body"
+                    style={{ fontSize: `${fontSize}px` }}
+                    onContextMenu={(e) => onRightClick(e, message)}
+                    onDoubleClickCapture={() => {
+                      if (!isMobileScreen()) return;
+                      setUserInput(message.content);
+                    }}
+                  >
+                    <Markdown content={message.content} />
+                  </div>
+                )
+              }
+              direction={isUser ? "right" : "left"}
+              footer={
+                <>
+                  {!isUser &&
+                    !(message.preview || message.content.length === 0) && (
+                      <>
+                        {message.streaming ? (
+                          <div onClick={() => onUserStop(i)}>
+                            {Locale.Chat.Actions.Stop}
+                          </div>
+                        ) : (
+                          message.isError && (
+                            <div onClick={() => onResend(i)}>
+                              {Locale.Chat.Actions.Retry}
+                            </div>
+                          )
+                        )}
+                        <div
+                          className="ml-2"
+                          onClick={() => copyToClipboard(message.content)}
+                        >
+                          {Locale.Chat.Actions.Copy}
+                        </div>
+                      </>
+                    )}
+                </>
+              }
+            />
+
+            /* <div
                 className={classNames(
                   "w-full chat py-2",
                   isUser ? "chat-end" : "chat-start",
@@ -647,119 +677,9 @@ export function Chat(props: {
                     {message.date.toLocaleString()}
                   </div>
                 )}
-              </div>
-            </div>
+              </div> */
           );
         })}
-
-        <Bubble
-          avatar={<Avatar role={"system"} />}
-          header="2023/4/12 14:56:18"
-          content={testText}
-          direction="left"
-          isLoading={loading}
-          footer={
-            <>
-              <div className="mr-2" onClick={() => console.log("sssss")}>
-                复制
-              </div>
-              <div>终止</div>
-            </>
-          }
-        />
-        {/* 
-        <Bubble
-          avatar={<Avatar role={"system"} />}
-          header="2023/4/12 14:56:18"
-          content="我能为你提供什么帮助么？"
-          direction="right"
-          type="primary"
-          footer={
-            <>
-              <div className="mr-2" onClick={() => console.log("sssss")}>
-                复制
-              </div>
-              <div>终止</div>
-            </>
-          }
-        />
-
-        <Bubble
-          avatar={<Avatar role={"system"} />}
-          header="2023/4/12 14:56:18"
-          content="我能为你提供什么帮助么？，我能为你提供什么帮助么？，我能为你提供什么帮助么？"
-          direction="left"
-          footer={
-            <>
-              <div className="mr-2" onClick={() => console.log("sssss")}>
-                复制
-              </div>
-              <div>终止</div>
-            </>
-          }
-        />
-
-        <Bubble
-          avatar={<Avatar role={"system"} />}
-          header="2023/4/12 14:56:18"
-          content="我能为你提供什么帮助么？"
-          direction="right"
-          type="primary"
-          footer={
-            <>
-              <div className="mr-2" onClick={() => console.log("sssss")}>
-                复制
-              </div>
-              <div>终止</div>
-            </>
-          }
-        />
-
-        <Bubble
-          avatar={<Avatar role={"system"} />}
-          header="2023/4/12 14:56:18"
-          content="我能为你提供什么帮助么？，我能为你提供什么帮助么？，我能为你提供什么帮助么？"
-          direction="left"
-          footer={
-            <>
-              <div className="mr-2" onClick={() => console.log("sssss")}>
-                复制
-              </div>
-              <div>终止</div>
-            </>
-          }
-        />
-
-        <Bubble
-          avatar={<Avatar role={"system"} />}
-          header="2023/4/12 14:56:18"
-          content="我能为你提供什么帮助么？"
-          direction="right"
-          type="primary"
-          footer={
-            <>
-              <div className="mr-2" onClick={() => console.log("sssss")}>
-                复制
-              </div>
-              <div>终止</div>
-            </>
-          }
-        />
-
-        <Bubble
-          avatar={<Avatar role={"system"} />}
-          header="2023/4/12 14:56:18"
-          content="我能为你提供什么帮助么？，我能为你提供什么帮助么？，我能为你提供什么帮助么？"
-          direction="left"
-          footer={
-            <>
-              <div className="mr-2" onClick={() => console.log("sssss")}>
-                复制
-              </div>
-              <div>终止</div>
-            </>
-          }
-        /> */}
       </div>
 
       <div className={styles["chat-input-panel"]}>
