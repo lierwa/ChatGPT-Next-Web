@@ -35,6 +35,7 @@ import chatStyle from "./chat.module.scss";
 
 import { Modal, showModal, showToast } from "./ui-lib";
 import classNames from "classnames";
+import Bubble from "./Bubble";
 
 const Markdown = dynamic(
   async () => memo((await import("./markdown")).Markdown),
@@ -156,7 +157,6 @@ function PromptToast(props: {
             ]}
           >
             <>
-              {" "}
               <div className={chatStyle["context-prompt"]}>
                 {context.map((c, i) => (
                   <div className={chatStyle["context-prompt-row"]} key={i}>
@@ -463,6 +463,29 @@ export function Chat(props: {
     inputRef.current?.focus();
   }, []);
 
+  const str =
+    "我能为你提供什么帮助么？, 我能为你提供什么帮助么?, 我能为你提供什么帮助么？, 我能为你提供什么帮助么？";
+  const [testText, setTestText] = useState<string>("222");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (str) {
+      let idx = 0;
+      setLoading(true);
+      const timer = setInterval(() => {
+        if (idx >= str.length) {
+          setLoading(false);
+          clearInterval(timer);
+          return;
+        }
+        setTestText(str.slice(0, idx));
+        idx++;
+      }, 300);
+    }
+  }, [str]);
+
+  console.log("testText", testText);
+
   return (
     <div className={styles.chat} key={session.id}>
       <div className={styles["window-header"]}>
@@ -628,6 +651,115 @@ export function Chat(props: {
             </div>
           );
         })}
+
+        <Bubble
+          avatar={<Avatar role={"system"} />}
+          header="2023/4/12 14:56:18"
+          content={testText}
+          direction="left"
+          isLoading={loading}
+          footer={
+            <>
+              <div className="mr-2" onClick={() => console.log("sssss")}>
+                复制
+              </div>
+              <div>终止</div>
+            </>
+          }
+        />
+        {/* 
+        <Bubble
+          avatar={<Avatar role={"system"} />}
+          header="2023/4/12 14:56:18"
+          content="我能为你提供什么帮助么？"
+          direction="right"
+          type="primary"
+          footer={
+            <>
+              <div className="mr-2" onClick={() => console.log("sssss")}>
+                复制
+              </div>
+              <div>终止</div>
+            </>
+          }
+        />
+
+        <Bubble
+          avatar={<Avatar role={"system"} />}
+          header="2023/4/12 14:56:18"
+          content="我能为你提供什么帮助么？，我能为你提供什么帮助么？，我能为你提供什么帮助么？"
+          direction="left"
+          footer={
+            <>
+              <div className="mr-2" onClick={() => console.log("sssss")}>
+                复制
+              </div>
+              <div>终止</div>
+            </>
+          }
+        />
+
+        <Bubble
+          avatar={<Avatar role={"system"} />}
+          header="2023/4/12 14:56:18"
+          content="我能为你提供什么帮助么？"
+          direction="right"
+          type="primary"
+          footer={
+            <>
+              <div className="mr-2" onClick={() => console.log("sssss")}>
+                复制
+              </div>
+              <div>终止</div>
+            </>
+          }
+        />
+
+        <Bubble
+          avatar={<Avatar role={"system"} />}
+          header="2023/4/12 14:56:18"
+          content="我能为你提供什么帮助么？，我能为你提供什么帮助么？，我能为你提供什么帮助么？"
+          direction="left"
+          footer={
+            <>
+              <div className="mr-2" onClick={() => console.log("sssss")}>
+                复制
+              </div>
+              <div>终止</div>
+            </>
+          }
+        />
+
+        <Bubble
+          avatar={<Avatar role={"system"} />}
+          header="2023/4/12 14:56:18"
+          content="我能为你提供什么帮助么？"
+          direction="right"
+          type="primary"
+          footer={
+            <>
+              <div className="mr-2" onClick={() => console.log("sssss")}>
+                复制
+              </div>
+              <div>终止</div>
+            </>
+          }
+        />
+
+        <Bubble
+          avatar={<Avatar role={"system"} />}
+          header="2023/4/12 14:56:18"
+          content="我能为你提供什么帮助么？，我能为你提供什么帮助么？，我能为你提供什么帮助么？"
+          direction="left"
+          footer={
+            <>
+              <div className="mr-2" onClick={() => console.log("sssss")}>
+                复制
+              </div>
+              <div>终止</div>
+            </>
+          }
+        /> */}
       </div>
 
       <div className={styles["chat-input-panel"]}>
@@ -651,7 +783,7 @@ export function Chat(props: {
           <IconButton
             icon={<SendWhiteIcon />}
             text={Locale.Chat.Send}
-            className={"absolute right-[30px] bottom-[30px]"}
+            className={"absolute right-[30px] bottom-[30px] btn-sm"}
             type="primary"
             noDark
             onClick={onUserSubmit}

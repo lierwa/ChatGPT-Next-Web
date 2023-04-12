@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import React, { useMemo, useCallback } from "react";
+import React, { useCallback } from "react";
 
 const btnType = {
   default: "btn btn-ghost dark:btn",
