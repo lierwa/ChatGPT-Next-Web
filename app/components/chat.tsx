@@ -501,6 +501,7 @@ export function Chat(props: {
               icon={<BrainIcon />}
               type="ghost"
               title={Locale.Chat.Actions.CompressedHistory}
+              className="shadow-card-shadow"
               onClick={() => {
                 setShowPromptModal(true);
               }}
@@ -511,6 +512,7 @@ export function Chat(props: {
               icon={<ExportIcon />}
               type="ghost"
               title={Locale.Chat.Actions.Export}
+              className="shadow-card-shadow"
               onClick={() => {
                 exportMessages(
                   session.messages.filter((msg) => !msg.isError),

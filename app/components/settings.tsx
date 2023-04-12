@@ -163,6 +163,7 @@ export function Settings(props: { closeSettings: () => void }) {
             <IconButton
               icon={<ClearIcon />}
               onClick={clearSessions}
+              className="shadow-card-shadow"
               type="ghost"
               title={Locale.Settings.Actions.ClearAll}
             />
@@ -171,6 +172,7 @@ export function Settings(props: { closeSettings: () => void }) {
             <IconButton
               icon={<ResetIcon />}
               onClick={resetConfig}
+              className="shadow-card-shadow"
               type="ghost"
               title={Locale.Settings.Actions.ResetAll}
             />
@@ -179,6 +181,7 @@ export function Settings(props: { closeSettings: () => void }) {
             <IconButton
               icon={<CloseIcon />}
               onClick={props.closeSettings}
+              className="shadow-card-shadow"
               type="ghost"
               title={Locale.Settings.Actions.Close}
             />
