@@ -23,6 +23,8 @@ import { ChatList } from "./chat-list";
 import { Chat } from "./chat";
 
 import dynamic from "next/dynamic";
+import { themeChange } from "theme-change";
+
 import { REPO_URL } from "../constant";
 import { ErrorBoundary } from "./error";
 
@@ -97,6 +99,10 @@ function _Home() {
   const config = useChatStore((state) => state.config);
 
   useSwitchTheme();
+
+  useEffect(() => {
+    themeChange(false);
+  }, []);
 
   if (loading) {
     return <Loading />;

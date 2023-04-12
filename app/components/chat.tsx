@@ -159,7 +159,7 @@ function PromptToast(props: {
             <>
               <div className={chatStyle["context-prompt"]}>
                 {context.map((c, i) => (
-                  <div className={chatStyle["context-prompt-row"]} key={i}>
+                  <div className={"flex justify-between items-center"} key={i}>
                     <Select
                       value={c.role}
                       className={"mr-[10px]"}
@@ -174,7 +174,7 @@ function PromptToast(props: {
                     <input
                       value={c.content}
                       type="text"
-                      className={chatStyle["context-content"]}
+                      className={"input-primary text-left flex-1"}
                       onChange={(e) =>
                         updateContextPrompt(i, {
                           ...c,
@@ -184,9 +184,9 @@ function PromptToast(props: {
                     ></input>
                     <IconButton
                       icon={<DeleteIcon />}
-                      className={chatStyle["context-delete-button"]}
                       onClick={() => removeContextPrompt(i)}
                       type="ghost"
+                      className="btn-sm"
                     />
                   </div>
                 ))}
@@ -602,82 +602,6 @@ export function Chat(props: {
                 </>
               }
             />
-
-            /* <div
-                className={classNames(
-                  "w-full chat py-2",
-                  isUser ? "chat-end" : "chat-start",
-                )}
-              >
-                <div
-                  className={
-                    "chat-image avatar w-10 h-10 rounded-full flex-center"
-                  }
-                >
-                  <Avatar role={message.role} />
-                </div>
-                {(message.preview || message.streaming) && (
-                  <div className={styles["chat-message-status"]}>
-                    {Locale.Chat.Typing}
-                  </div>
-                )}
-                <div
-                  className={classNames(isUser ? "chat-bubble" : "chat-bubble")}
-                >
-                  {!isUser &&
-                    !(message.preview || message.content.length === 0) && (
-                      <div className={styles["chat-message-top-actions"]}>
-                        {message.streaming ? (
-                          <div
-                            className={styles["chat-message-top-action"]}
-                            onClick={() => onUserStop(i)}
-                          >
-                            {Locale.Chat.Actions.Stop}
-                          </div>
-                        ) : (
-                          <div
-                            className={styles["chat-message-top-action"]}
-                            onClick={() => onResend(i)}
-                          >
-                            {Locale.Chat.Actions.Retry}
-                          </div>
-                        )}
-
-                        <div
-                          className={styles["chat-message-top-action"]}
-                          onClick={() => copyToClipboard(message.content)}
-                        >
-                          {Locale.Chat.Actions.Copy}
-                        </div>
-                      </div>
-                    )}
-                  {(message.preview || message.content.length === 0) &&
-                  !isUser ? (
-                    <LoadingIcon />
-                  ) : (
-                    <div
-                      className="markdown-body"
-                      style={{ fontSize: `${fontSize}px` }}
-                      onContextMenu={(e) => onRightClick(e, message)}
-                      onDoubleClickCapture={() => {
-                        if (!isMobileScreen()) return;
-                        setUserInput(message.content);
-                      }}
-                    >
-                      <Markdown content={message.content} />
-                    </div>
-                  )}
-                </div>
-                {!isUser && !message.preview && (
-                  <div
-                    className={
-                      "text-xs box-border mt-[5px] chat-footer opacity-50"
-                    }
-                  >
-                    {message.date.toLocaleString()}
-                  </div>
-                )}
-              </div> */
           );
         })}
       </div>

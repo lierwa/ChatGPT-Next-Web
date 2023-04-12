@@ -34,7 +34,6 @@ import { UPDATE_URL } from "../constant";
 import { SearchService, usePromptStore } from "../store/prompt";
 import { requestUsage } from "../requests";
 import { ErrorBoundary } from "./error";
-import { themeChange } from "theme-change";
 import classNames from "classnames";
 
 function SettingItem(props: {
@@ -80,10 +79,6 @@ function PasswordInput(props: HTMLProps<HTMLInputElement>) {
 }
 
 export function Settings(props: { closeSettings: () => void }) {
-  useEffect(() => {
-    themeChange(false);
-  }, []);
-
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [config, updateConfig, resetConfig, clearAllData, clearSessions] =
     useChatStore((state) => [
